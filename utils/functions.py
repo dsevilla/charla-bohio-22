@@ -60,7 +60,7 @@ def say_(string, font):
             # Make it on a scale from 0 to 1
             distanceToCenter = float(distanceToCorner) / (1.4142 * imgsize[0])
 
-            #Calculate r, g, and b values
+            # Calculate r, g, and b values
             r = outerColor[0] * distanceToCenter + innerColor[0] * (1 - distanceToCenter)
             g = outerColor[1] * distanceToCenter + innerColor[1] * (1 - distanceToCenter)
             b = outerColor[2] * distanceToCenter + innerColor[2] * (1 - distanceToCenter)
@@ -70,9 +70,8 @@ def say_(string, font):
             image.putpixel((x, y), (int(r), int(g), int(b)))
 
     draw = ImageDraw.Draw(image)
-    draw.text((int((imgsize[0] - fontsize[0]) / 2),int((imgsize[1] - fontsize[1]) / 2)), 
-              string, (255,255,255,1), font=font)
-
+    draw.text((int(imgsize[0] / 2),int(imgsize[1] / 2)), 
+              string, (255,255,255,1), font=font, anchor='mm')
     return image
 
 # http://stackoverflow.com/a/30525061/62365
