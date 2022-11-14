@@ -37,8 +37,24 @@ def herosay(string, img):
               (255,255,255,1), 
               font=font_small)
     return imgcp
-    
+
 def say_(string, font):
+    if len(string) == 0:
+        return False
+    
+    fontbbox = font.getbbox(string) #The size of the font
+    fontsize = (fontbbox[2] - fontbbox[0], fontbbox[3] - fontbbox[1])
+    imgsize = [int(fontsize[0] * scale), int(fontsize[1] * scale)]
+
+    image = background.copy()
+    image = image.resize(imgsize)
+
+    draw = ImageDraw.Draw(image)
+    draw.text((int(imgsize[0] / 2),int(imgsize[1] / 2)), 
+              string, (255,255,255,1), font=font, anchor='mm')
+    return image
+
+def say__(string, font):
     if len(string) == 0:
         return False
     
