@@ -15,6 +15,7 @@ def say(string):
 
 yodaimg = PImage.open('images/yoda.jpg')
 chewimg = PImage.open('images/diego.png')
+background = PImage.open('images/background.png')
 scale=1.5
 
 def yoda(string):
@@ -44,7 +45,8 @@ def say_(string, font):
     
     fontbbox = font.getbbox(string) #The size of the font
     fontsize = (fontbbox[2] - fontbbox[0], fontbbox[3] - fontbbox[1])
-    imgsize = [int(fontsize[0] * scale), int(fontsize[1] * scale)]
+    emsize = int(fontsize[0] / len(string))
+    imgsize = [int(fontsize[0] + 4*emsize), int(fontsize[1] * scale)]
 
     image = background.copy()
     image = image.resize(imgsize)
