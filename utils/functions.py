@@ -2,16 +2,17 @@ from PIL import ImageFont
 from PIL import ImageDraw
 from PIL import Image as PImage
 import math
+import textwrap
 
-font = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 150)
+font = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 100)
 #fontEmoji = ImageFont.truetype("fonts/OpenSansEmoji.ttf", 150)
 font_small = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 60)
 
 #def sayEmoji(string):
 #    return say_(string, fontEmoji)
 
-def say(string):
-    return say_(string, font)
+def say(string, align='center'):
+    return say_(string, font, align)
 
 yodaimg = PImage.open('images/yoda.jpg')
 chewimg = PImage.open('images/diego.png')
@@ -39,21 +40,24 @@ def herosay(string, img):
               font=font_small)
     return imgcp
 
-def say_(string, font):
+def say_(string, font, align):
     if len(string) == 0:
         return False
-    
-    fontbbox = font.getbbox(string) #The size of the font
-    fontsize = (fontbbox[2] - fontbbox[0], fontbbox[3] - fontbbox[1])
-    emsize = int(fontsize[0] / len(string))
-    imgsize = [int(fontsize[0] + 4*emsize), int(fontsize[1] * scale)]
 
     image = background.copy()
+    draw = ImageDraw.Draw(image)
+    fontbbox = draw.textbbox((0,0),string,font=font,anchor='mm', align=align)
+    #fontbbox = font.getbbox(string) #The size of the font
+    fontsize = (fontbbox[2] - fontbbox[0], fontbbox[3] - fontbbox[1])
+    emsize = int(fontsize[0] / len(string))
+    imgsize = [int(fontsize[0] + 4*emsize), int(fontsize[1] + 2 *emsize)]
+
+    #image = background.copy()
     image = image.resize(imgsize)
 
     draw = ImageDraw.Draw(image)
-    draw.text((int(imgsize[0] / 2),int(imgsize[1] / 2)), 
-              string, (255,255,255,1), font=font, anchor='mm')
+    draw.multiline_text((int(imgsize[0] / 2),int(imgsize[1] / 2)), 
+                  string, (255,255,255,1), font=font, anchor='mm', align=align)
     return image
 
 def say__(string, font):
