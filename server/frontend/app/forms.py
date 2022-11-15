@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import (StringField, SelectField)
+from wtforms import (StringField, SelectField, IntegerField)
 from wtforms.validators import DataRequired, Length
 
 class SelectSensor(FlaskForm):
@@ -10,4 +10,4 @@ class SelectSensor(FlaskForm):
 
 class TempSensorV1(FlaskForm):
     sensor_id = StringField(u'Id', validators=[DataRequired()])
-
+    temp = IntegerField(u'Temp', validators=[DataRequired()], default=25)

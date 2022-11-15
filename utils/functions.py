@@ -5,13 +5,13 @@ import math
 import textwrap
 
 font = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 100)
-#fontEmoji = ImageFont.truetype("fonts/OpenSansEmoji.ttf", 150)
+fontEmoji = ImageFont.truetype("fonts/OpenSansEmoji.ttf", 150)
 font_small = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 60)
 
 #def sayEmoji(string):
 #    return say_(string, fontEmoji)
 
-def say(string, align='center'):
+def say(string, font=font, align='center'):
     return say_(string, font, align)
 
 yodaimg = PImage.open('images/yoda.jpg')
@@ -24,6 +24,9 @@ def yoda(string):
 
 def chew(string):
     return herosay(string, chewimg)
+
+def wooclap(text = u''):
+    return say(u"Wooclap! %s 👏" % (text), fontEmoji)
 
 def herosay(string, img):    
     fontbbox = font_small.getbbox(string)
