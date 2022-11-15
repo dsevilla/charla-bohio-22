@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mt-5">
+    BohioControls Select Sensor
+</h1>
+<p class="lead">
+    Select a sensor to send Data...
+</p>
+
+<main class="w-100 p-3">
+
+<form method="POST" enctype="multipart/form-data"
+      class="form-horizontal form-bordered">
+    {{ form.hidden_tag() }}
+
+  <div class="form-group">
+    <h1 class="h3 mb-3 fw-normal">Choose Sensor:</h1>
+    <label for="sensor_id">Sensor ID: </label>
+    {{form.sensor_id}}
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+</form>
+  {% if error %}
+     <p class="error"><strong>Error:</strong> {{ error }}
+  {% endif %}
+</main>
+{% endblock %}
