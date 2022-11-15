@@ -5,6 +5,7 @@ import math
 import textwrap
 
 font = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 100)
+fontMono = ImageFont.truetype("fonts/DroidSansMono.ttf", 100)
 fontEmoji = ImageFont.truetype("fonts/OpenSansEmoji.ttf", 150)
 font_small = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 60)
 
@@ -13,6 +14,10 @@ font_small = ImageFont.truetype("fonts/OpenSans-ExtraBold.ttf", 60)
 
 def say(string, font=font, align='center'):
     return say_(string, font, align)
+
+def sayM(string, font=fontMono, align='left'):
+    return say_(string, font, align)
+
 
 yodaimg = PImage.open('images/yoda.jpg')
 chewimg = PImage.open('images/diego.png')
