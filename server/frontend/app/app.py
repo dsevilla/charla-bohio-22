@@ -33,9 +33,9 @@ def favicon():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     error = None
-    form = SelectSensor(request.form)
-    if request.method == "POST" and form.validate():
-        if form.sensor_id.data >= 0 and form.sensor_id.data < 10:
+    form = SelectSensor()
+    if request.method == "POST":
+        if form.sensor_id.data < 10:
             return redirect(url_for('send_data_temp_v1',
                                     id=str(form.sensor_id.data)))
         if form.sensor_id.data >= 10 and form.sensor_id.data < 20:

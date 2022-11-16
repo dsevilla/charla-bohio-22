@@ -36,9 +36,9 @@ sensor_choices = [(0, '0'),
                   ]
 
 class SelectSensor(FlaskForm):
-    def __init__(self, other):
+    def __init__(self):
         random.shuffle(sensor_choices)
-        super().__init__(other)
+        super().__init__()
         
     sensor_id = SelectField(u'Sensor ID', 
                             choices=sensor_choices,
