@@ -33,8 +33,6 @@ def index():
             return redirect(url_for('send_data_presence_v1',
                                     id=str(form.sensor_id.data)))
 
-
-
     return render_template('index.html', form=form)
 
 @app.route('/send_data_light_v1/<id>', methods=['GET', 'POST'])
