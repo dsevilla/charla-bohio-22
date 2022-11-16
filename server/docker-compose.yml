@@ -16,3 +16,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=BohioControls22
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6300:6379
