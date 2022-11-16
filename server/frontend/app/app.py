@@ -15,7 +15,7 @@ app = Flask(__name__, static_url_path='')
 app.config['SECRET_KEY'] = 'qH1vprMjavek52cv7Lmfe1FoCexrrV8egFnB21jHhkuOHm8hJUe1hwn7pKEZQ1fioUzDb3sWcNK1pJVVIhyrgvFiIrceXpKJBFIn_i9-LTLBCc4cqaI3gjJJHU6kxuT8bnC7Nq'
 
 passw = codecs.encode('ObuvbPbagebyf22', 'rot_13')
-client = MongoClient("mongodb://root:%s@mongo" % (passw), 27017)
+client = MongoClient("mongodb://root:%s@mongo" % (passw), 27000)
 
 # readings database
 db = client.bohiocontrols
