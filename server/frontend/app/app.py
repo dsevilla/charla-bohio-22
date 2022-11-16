@@ -1,6 +1,10 @@
 from flask import Flask, render_template, send_from_directory, url_for, request, redirect
 import requests
 import os
+import pymongo
+import codecs
+import datetime
+from pymongo import MongoClient
 
 from forms import SelectSensor
 from forms import TempSensorV1
@@ -9,6 +13,14 @@ from forms import PresenceSensorV1
 
 app = Flask(__name__, static_url_path='')
 app.config['SECRET_KEY'] = 'qH1vprMjavek52cv7Lmfe1FoCexrrV8egFnB21jHhkuOHm8hJUe1hwn7pKEZQ1fioUzDb3sWcNK1pJVVIhyrgvFiIrceXpKJBFIn_i9-LTLBCc4cqaI3gjJJHU6kxuT8bnC7Nq'
+
+passw = codecs.encode('ObuvbPbagebyf22', 'rot_13')
+client = MongoClient("mongodb://root:%s@mongo" % (passw), 27017)
+
+# readings database
+db = client.bohiocontrols
+readings = db.readings
+
 @app.route('/static/<path:path>')
 def serve_static(path):
     return send_from_directory('static', path)
@@ -41,6 +53,12 @@ def send_data_light_v1(id):
     form = LightSensorV1()
     form.sensor_id.data = id
     if request.method == "POST" and form.validate():
+        readings.insert_one(
+                {"sensor_id" : id,
+                 "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
+                 "type" : "light_sensor_v1",
+                 "light_level": form.light_level.data
+                 })
         return redirect(url_for('index'))
 
     return render_template('send_data_light_v1.html', form=form, error=error)
@@ -51,6 +69,12 @@ def send_data_presence_v1(id):
     form = PresenceSensorV1()
     form.sensor_id.data = id
     if request.method == "POST" and form.validate():
+        readings.insert_one(
+                {"sensor_id" : id,
+                 "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
+                 "type" : "presence_v1",
+                 "person_detected": form.presence.data
+                 })
         return redirect(url_for('index'))
 
     return render_template('send_data_presence_v1.html', form=form, error=error)
@@ -62,16 +86,14 @@ def send_data_temp_v1(id):
     form = TempSensorV1()
     form.sensor_id.data = id
     if request.method == "POST" and form.validate():
+        readings.insert_one(
+                {"sensor_id" : id,
+                 "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
+                 "type" : "temp/humidity_v1",
+                 "temp" : form.temp.data,
+                 "humidity": form.humidity.data
+                 })
         return redirect(url_for('index'))
-        # print(requests.Request('POST', 'http://localhost:8080/rest/uploadVideo',
-        #                        files=files).prepare().body.decode('utf-8'))
-        #REST_SERVER = os.environ.get('REST_SERVER', 'localhost')
-        #response = requests.post('http://'+REST_SERVER+':8080/Service/uploadVideo',
-        #                         files=files)
-        #if response.status_code == 200:
-        #    error = "Video uploaded successfully"
-        #else:
-        #    error = response.text
 
     return render_template('send_data_temp_v1.html', form=form, error=error)
 

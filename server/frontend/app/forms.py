@@ -56,4 +56,3 @@ class PresenceSensorV1(FlaskForm):
     sensor_id = StringField(u'Id', validators=[DataRequired()])
     presence = BooleanField(u'Person detected', validators=[DataRequired()], default=False)
 
-
