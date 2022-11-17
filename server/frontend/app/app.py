@@ -63,7 +63,7 @@ def send_data_light_v1(id):
             "light_level": form.light_level.data
         }
         readings.insert_one(sensor_data);
-        r.put("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
+        r.set("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
  
         return redirect(url_for('index'))
 
@@ -82,7 +82,7 @@ def send_data_presence_v1(id):
             "person_detected": form.presence.data
         }
         readings.insert_one(sensor_data)
-        r.put("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
+        r.set("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
                  
         return redirect(url_for('index'))
 
@@ -103,7 +103,7 @@ def send_data_temp_v1(id):
             "humidity": form.humidity.data
         }
         readings.insert_one(sensor_data)
-        r.put("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
+        r.set("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
         return redirect(url_for('index'))
 
     return render_template('send_data_temp_v1.html', form=form, error=error)
