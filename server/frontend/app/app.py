@@ -5,6 +5,8 @@ import pymongo
 import codecs
 import datetime
 from pymongo import MongoClient
+import redis
+import pprint
 
 from forms import SelectSensor
 from forms import TempSensorV1
@@ -20,6 +22,7 @@ client = MongoClient("mongodb://root:%s@mongo" % (passw), 27017)
 # readings database
 db = client.bohiocontrols
 readings = db.readings
+r = redis.Redis(host='redis', port=6379, db=0)
 
 @app.route('/static/<path:path>')
 def serve_static(path):
@@ -53,12 +56,15 @@ def send_data_light_v1(id):
     form = LightSensorV1()
     form.sensor_id.data = id
     if request.method == "POST" and form.validate():
-        readings.insert_one(
-                {"sensor_id" : id,
-                 "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
-                 "type" : "light_sensor_v1",
-                 "light_level": form.light_level.data
-                 })
+        sensor_data = {
+            "sensor_id" : id,
+            "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
+            "type" : "light_sensor_v1",
+            "light_level": form.light_level.data
+        }
+        readings.insert_one(sensor_data);
+        r.put("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
+ 
         return redirect(url_for('index'))
 
     return render_template('send_data_light_v1.html', form=form, error=error)
@@ -69,12 +75,15 @@ def send_data_presence_v1(id):
     form = PresenceSensorV1()
     form.sensor_id.data = id
     if request.method == "POST" and form.validate():
-        readings.insert_one(
-                {"sensor_id" : id,
-                 "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
-                 "type" : "presence_v1",
-                 "person_detected": form.presence.data
-                 })
+        sensor_data = {
+            "sensor_id" : id,
+            "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
+            "type" : "presence_v1",
+            "person_detected": form.presence.data
+        }
+        readings.insert_one(sensor_data)
+        r.put("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
+                 
         return redirect(url_for('index'))
 
     return render_template('send_data_presence_v1.html', form=form, error=error)
@@ -86,13 +95,15 @@ def send_data_temp_v1(id):
     form = TempSensorV1()
     form.sensor_id.data = id
     if request.method == "POST" and form.validate():
-        readings.insert_one(
-                {"sensor_id" : id,
-                 "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
-                 "type" : "temp/humidity_v1",
-                 "temp" : form.temp.data,
-                 "humidity": form.humidity.data
-                 })
+        sensor_data = {
+            "sensor_id" : id,
+            "timestamp" : int(datetime.datetime.timestamp(datetime.datetime.now())*1000),
+            "type" : "temp/humidity_v1",
+            "temp" : form.temp.data,
+            "humidity": form.humidity.data
+        }
+        readings.insert_one(sensor_data)
+        r.put("sensor_id_%d" % (id), pprint.pformat(sensor_data,indent=2))
         return redirect(url_for('index'))
 
     return render_template('send_data_temp_v1.html', form=form, error=error)
