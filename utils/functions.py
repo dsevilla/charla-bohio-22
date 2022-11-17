@@ -31,7 +31,7 @@ def chew(string):
     return herosay(string, chewimg)
 
 def wooclap(text = u''):
-    return say(u"Wooclap! %s 👏" % (text), fontEmoji)
+    return say(u"Wooclap! 👏 %s" % (text), fontEmoji)
 
 def herosay(string, img):    
     fontbbox = font_small.getbbox(string)
