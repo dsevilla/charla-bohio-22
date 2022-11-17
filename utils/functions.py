@@ -127,3 +127,9 @@ class ListDictTable(list):
             html.append("</li>")
         html.append("</ul>")
         return ''.join(html)
+
+from IPython.display import HTML
+
+def img_to_fixed_width_html_image(img_url, width="100%"):
+    text = f'<img width="{width}" src="{img_url}"/>'
+    return HTML(text)
